@@ -1,0 +1,237 @@
+{extend name="base/common" /} {block name="content"}
+  <div class="horizontal-space space-xl"></div>
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-3 col-xs-12">
+                            <div class="dd dd-draghandle">
+                                      <div class="page-sidebar" id="sidebar">
+                                          <ul class="nav sidebar-menu">
+                                             <li class="active open">
+                                                        <a href="javascript:volid(0)" class="menu-dropdown">
+                                                            <i class="menu-icon fa fa-desktop"></i>
+                                                            <span class="menu-text"> 文章栏目 </span>
+                                                            <i class="menu-expand"></i>
+                                                        </a>
+                                                        <ul class="submenu">
+                                                           {volist name='cat' id='item'}
+                                                            <li>
+                                                                <a href="javascript:void(0)" onclick="request(this)" data-id = "{$item.id}" class="menu-dropdown">
+                                                                    <span class="menu-text">
+                                                                       {$item.name}
+                                                                    </span>
+                                                                    <i class="menu-expand"></i>
+                                                                </a>
+                                                                {if isset($item['child'])}
+                                                                <ul class="submenu">
+                                                                    {volist name="item['child']" id='vo'}
+                                                                    <li>
+                                                                        <a href="javascript:void(0)" onclick="request(this)" data-id = "{$vo.id}" class="menu-dropdown">
+                                                                            <i class="menu-icon wi wi-hot"></i>
+                                                                            <span class="menu-text">{$vo.name}</span>
+                                                                            <i class="menu-expand"></i>
+                                                                        </a>
+                                                                        {if isset($vo['child'])}
+                                                                        <ul class="submenu">
+                                                                            {volist name="vo['child']" id = "value"}
+                                                                            <li>
+                                                                                <a href="javascript:void(0)" onclick="request(this)" data-id="{$value.id}">
+                                                                                    <i class="menu-icon typcn typcn-location-outline"></i>
+                                                                                    <span class="menu-text">{$value.name}</span>
+                                                                                </a>
+                                                                             </li>
+                                                                             {/volist}
+                                                                        </ul>
+                                                                        {/if}
+                                                                    </li>
+                                                                    {/volist}
+                                                                </ul>
+                                                                {/if}
+                                                            </li>
+                                                            {/volist}
+                                                        </ul>
+                                                    </li>
+                                            </ul>
+
+                     </div>
+
+
+                            </div>
+                        </div>
+
+     <div class="col-lg-9 col-sm-9 col-xs-12">
+        <div class="well">
+             <div class=" dd-draghandle bordered">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                            <div class="widget">
+                                <div class="widget-header ">
+                                    <!-- <span class="widget-caption">Editable DataTable</span> -->
+                                    <div class="widget-buttons">
+                                        <a href="#" data-toggle="maximize">
+                                            <i class="fa fa-expand"></i>
+                                        </a>
+                                        <a href="#" data-toggle="collapse">
+                                            <i class="fa fa-minus"></i>
+                                        </a>
+                                        <a href="#" data-toggle="dispose">
+                                            <i class="fa fa-times"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="widget-body">
+                                    <div class="table-toolbar">
+                                        <a id="editabledatatable_new" href="{:url('article/add')}" class="btn btn-default">
+                                            Add New Artcle
+                                        </a>
+                                        <div class="btn-group pull-right">
+                                            <a class="btn btn-default" href="javascript:void(0);">导出工具</a>
+                                            <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><i class="fa fa-angle-down"></i></a>
+                                            <ul class="dropdown-menu dropdown-default">
+                                                <li>
+                                                    <a href="">导出会员excell</a>
+                                                </li>
+                                                <li>
+                                                    <a href="">导出会员word</a>
+                                                </li>
+                                                <li>
+                                                    <a href="">导出会员pdf</a>
+                                                </li>
+                                                <li class="divider"></li>
+                                                <li>
+                                                    <a href="javascript:void(0);">Separated link</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <table class="table table-striped table-hover table-bordered" id="editabledatatable">
+                                        <thead>
+                                            <tr role="row">
+                                                <th>
+                                                    <label><input type="checkbox"><span class="text"></span></label>
+                                                </th>
+                                                <th>
+                                                    文章id
+                                                </th>
+                                                <th>
+                                                    文章名称
+                                                </th>
+                                                <th>
+                                                    所属栏目
+                                                </th>
+                                                <th>
+                                                    添加时间
+                                                </th>
+                                                <th>
+                                                    是否显示
+                                                </th>
+                                                <th>
+                                                    是否置顶
+                                                </th>
+                                                <th>
+                                                    推荐级别
+                                                </th>
+                                                <th>
+                                                    浏览量
+                                                </th>
+                                                <th>
+                                                    排序
+                                                </th>
+                                                <th>
+                                                    操作
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+
+                                        <tbody id="article_list">
+                                          <!--   {volist name="article_list" id = "item"}
+                                                <tr>
+                                                    <td>
+                                                        <label><input type="checkbox"><span class="text"></span></label>
+                                                    </td>
+                                                     <td>
+                                                        <p onclick="cg(this)">{$item.id}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p onclick="cg(this)">{$item.name}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p onclick="cg(this)">{$item.cat_id}</p>
+                                                    </td>
+                                                    <td >
+                                                        <p onclick="cg(this)">{$item.add_time}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p onclick="cg(this)">{$item.is_show}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p onclick="cg(this)">{$item.is_top}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p onclick="cg(this)">{$item.is_recomond}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p onclick="cg(this)">{$item.brower}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p onclick="cg(this)">{$item.order}</p>
+                                                    </td>
+                                                    <td>
+                                                        <a href="{:url('article/edit',['id'=>$item['id']])}" class="btn btn-info btn-xs edit"><i class="fa fa-edit"></i> Edit</a>
+                                                        <a href="javascript:void(0)" onclick="warning('确实要删除吗', '{:url('article/del',['id'=>$item['id']])}')" class="btn btn-danger btn-xs delete"><i class="fa fa-trash-o"></i> Delete</a>
+                                                    </td>
+                                                </tr>
+                                            {/volist} -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>      
+             </div>
+        </div>
+     </div>
+
+
+<script src="/assets/js/jquery.min.js"></script>
+<script>
+function request(obj){
+    var id = $(obj).attr("data-id");
+    $.ajax({
+               url : "{:url('article/model')}",
+               data:{id:id},
+               cache : false,
+               async : true,
+               type : "POST",
+               dataType : 'json',
+               success : function (result){
+                var html = '';
+               $.each(result,function(i,item){
+                   html += '<tr>';
+                   html += '<td><label><input type="checkbox"><span class="text"></span></label></td>';
+                   html += '<td><p >'+item.id+'</p> </td>';
+                   html += '<td><p >'+item.name+'</p> </td>';
+                   html += '<td><p >'+item.cat_id+'</p></td>';
+                   html += '<td ><p >'+item.add_time+'</p> </td>';
+                   html += '<td><p >'+item.is_show+'</p></td>';
+                   html += '<td><p >'+item.is_top+'</p></td>';
+                   html += '<td><p >'+item.is_recomond+'</p> </td>';
+                   html += '<td><p >'+item.brower+'</p></td>';
+                   html += '<td><p >'+item.order+'</p></td>';
+                   html += '<td> <a href="{:url()}" class="btn btn-info btn-xs edit "><i class="fa fa-edit"></i> Edit</a> <a href="javascript:void(0)"  class="btn btn-danger btn-xs delete"><i class="fa fa-trash-o"></i> Delete</a></td>';
+                   html += '</tr>';
+                   $('#article_list').html(html);
+                });
+               },
+               error:function(XMLHttpRequest, textStatus, errorThrown){
+                 alert(XMLHttpRequest.status);
+               },
+               complete:function(XMLHttpRequest, textStatus){
+
+                this; // 
+
+               }
+
+           });
+}
+</script>
+{/block}
